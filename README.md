@@ -4,3 +4,5 @@
 
 
 flutter packages get 之后，执行 flutter clean，之后在android目录下执行 ./gradlew assembleRelease
+
+- flutter_shared 的问题已经修复，但是 `--local-engine` 执行下依然后问题 [#21107](https://github.com/flutter/flutter/issues/21107)
