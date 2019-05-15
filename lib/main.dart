@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 void main() => runApp(MyApp());
 
@@ -102,10 +103,27 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: (){
+          Navigator.push(context, new MaterialPageRoute(builder: (context) {
+            return TestWebView();
+          }));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+
+class TestWebView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new WebviewScaffold(
+      url: "https://www.baidu.com",
+      appBar: new AppBar(
+        title: new Text("Widget webview"),
+      ),
     );
   }
 }

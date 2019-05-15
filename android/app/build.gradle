@@ -1,3 +1,6 @@
+def isLib = true
+
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,10 +24,18 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-//apply plugin: 'com.android.application'
-apply plugin: 'com.android.library'
+
+if(isLib) {
+    apply plugin: 'com.android.library'
+} else  {
+    apply plugin: 'com.android.application'
+}
+
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+if(isLib) {
+    apply plugin: 'com.kezong.fat-aar'
+}
 
 android {
     compileSdkVersion 28
@@ -39,7 +50,9 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        //applicationId "com.shuyu.flutter_app_lib"
+        if(!isLib) {
+            applicationId "com.shuyu.flutter_app_lib"
+        }
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -69,4 +82,19 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    ///为库的方式才添加本地仓库依赖，这个本地仓库目前是从 include 那里读取的。
+    if(isLib) {
+        def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+        def plugins = new Properties()
+        def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+        if (pluginsFile.exists()) {
+            pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+        }
+        plugins.each { name, _ ->
+            println name
+            embed project(path: ":$name", configuration: 'default')
+        }
+    }
+
 }

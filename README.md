@@ -70,3 +70,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         }
 
 ```
+
+
+
+#### 所以你需要 fat-aar 来做这件事情，因为打包 aar 时本地工程是不会打包进去的，所以需要在 dependencies 中通过配置读取相关的文件配置
