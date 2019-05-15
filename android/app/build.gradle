@@ -58,9 +58,11 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            //设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+        if(isLib) {
+            ndk {
+                //设置支持的SO库架构
+                abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+            }
         }
     }
 
